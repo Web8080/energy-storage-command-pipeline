@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allye MAX300 Architecture Diagram</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: false,
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis',
+        padding: 20
+      },
+      theme: 'neutral',
+      themeVariables: {
+        primaryColor: '#e8e8e8',
+        primaryTextColor: '#1f1f1f',
+        primaryBorderColor: '#4a4a4a',
+        lineColor: '#4a4a4a',
+        secondaryColor: '#f5f5f5',
+        tertiaryColor: '#fff'
+      }
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
+    });
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px;
+      min-height: 100vh;
+      background: #ffffff;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f1f1f;
+      margin: 0 0 24px 0;
+    }
+    .diagram-wrap {
+      background: #fff;
+      padding: 32px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: auto;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+    @media (min-width: 900px) {
+      .diagram-wrap { min-width: 860px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Allye MAX300 Remote Control &ndash; High-Level Architecture</h1>
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart LR
+    subgraph external["External"]
+        A[Schedule Provider\nHTTP GET /tomorrow]
+    end
+
+    subgraph cloud["Cloud"]
+        B[Schedule Ingestion\nFastAPI on Lambda]
+        subgraph storage["Schedule Storage"]
+            C1[(S3\nRaw schedules / audit)]
+            C2[(DynamoDB\nCommand state & metadata)]
+        end
+        D[AWS IoT Core\nMQTT over TLS]
+    end
+
+    subgraph edge["Edge"]
+        E[Raspberry Pi\nMAX300 Python Agent]
+        F[Battery Controller\nCharge / Discharge]
+    end
+
+    A --> B
+    B --> C1
+    B --> C2
+    B --> D
+    D --> E
+    E --> F
+
+    E -.->|ACK, execution reports, heartbeats| D
+    D -.->|Logs & metrics| G[CloudWatch]
+    </pre>
+  </div>
+  <p style="margin-top: 24px; font-size: 0.875rem; color: #666;">Open this file in a browser and screenshot the diagram, or use DevTools to export the SVG.</p>
+</body>
+</html>

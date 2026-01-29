@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://allye.example/schemas/heartbeat/v1.json",
+  "title": "Heartbeat",
+  "description": "Periodic liveness signal from device",
+  "type": "object",
+  "required": ["device_id", "sent_at", "schema_version"],
+  "properties": {
+    "device_id": {
+      "type": "string",
+      "description": "Device sending heartbeat"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When heartbeat was sent (ISO8601)"
+    },
+    "current_interval_start": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional: start of interval currently being executed"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    }
+  }
+}

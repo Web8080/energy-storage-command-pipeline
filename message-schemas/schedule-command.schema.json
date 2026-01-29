@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://allye.example/schemas/schedule-command/v1.json",
+  "title": "ScheduleCommand",
+  "description": "Day-ahead charge/discharge schedule delivered from cloud to device",
+  "type": "object",
+  "required": ["message_id", "device_id", "schedule_date", "intervals", "issued_at", "schema_version"],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique id for idempotency and traceability"
+    },
+    "device_id": {
+      "type": "string",
+      "pattern": "^allye-max300-[a-zA-Z0-9-]+$",
+      "description": "Target device identifier"
+    },
+    "schedule_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date covered by the schedule (YYYY-MM-DD)"
+    },
+    "intervals": {
+      "type": "array",
+      "minItems": 48,
+      "maxItems": 48,
+      "items": {
+        "$ref": "#/$defs/interval"
+      },
+      "description": "Exactly 48 half-hour intervals for the day"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the command was issued (ISO8601)"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1",
+      "description": "Schema version for backward compatibility"
+    }
+  },
+  "$defs": {
+    "interval": {
+      "type": "object",
+      "required": ["start_time", "end_time", "mode", "rate_kw"],
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Interval start (ISO8601)"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Interval end (ISO8601)"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["DISCHARGE", "CHARGE"],
+          "description": "DISCHARGE = mode 1, CHARGE = mode 2"
+        },
+        "rate_kw": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Power in kW (absolute value)"
+        }
+      }
+    }
+  }
+}

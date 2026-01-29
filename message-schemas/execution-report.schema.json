@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://allye.example/schemas/execution-report/v1.json",
+  "title": "ExecutionReport",
+  "description": "Report from device after executing (or failing) a schedule interval",
+  "type": "object",
+  "required": ["message_id", "device_id", "start_time", "end_time", "reported_at", "result", "schema_version"],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Command this interval belongs to"
+    },
+    "device_id": {
+      "type": "string",
+      "description": "Device that executed"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Interval start (ISO8601)"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Interval end (ISO8601)"
+    },
+    "reported_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the device sent this report (ISO8601)"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["EXECUTED", "FAILED", "SKIPPED"],
+      "description": "EXECUTED = mode/rate applied; FAILED = error; SKIPPED = e.g. out of window"
+    },
+    "error_code": {
+      "type": "string",
+      "description": "Present when result is FAILED"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    }
+  }
+}

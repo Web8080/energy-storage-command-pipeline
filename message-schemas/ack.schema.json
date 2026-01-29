@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://allye.example/schemas/ack/v1.json",
+  "title": "CommandAck",
+  "description": "Device acknowledgement that a schedule command was received and validated",
+  "type": "object",
+  "required": ["message_id", "device_id", "ack_at", "status", "schema_version"],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Same as the command being acknowledged"
+    },
+    "device_id": {
+      "type": "string",
+      "description": "Device that received the command"
+    },
+    "ack_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the device acknowledged (ISO8601)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACCEPTED", "REJECTED"],
+      "description": "ACCEPTED = valid and persisted; REJECTED = validation failed"
+    },
+    "reject_reason": {
+      "type": "string",
+      "description": "Present only when status is REJECTED"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    }
+  }
+}
