@@ -9,7 +9,6 @@ Design for day-ahead charge/discharge schedules: cloud ingestion, MQTT delivery 
 | Path | Contents |
 |------|----------|
 | [DESIGN_PROPOSAL.md](./DESIGN_PROPOSAL.md) | Design document (2-page target). Diagram embedded in Section 4. |
-| [DESIGN_PROPOSAL.html](./DESIGN_PROPOSAL.html)  |
 | [docs/allye-max300-architecture-diagram.png](./docs/allye-max300-architecture-diagram.png) | Architecture diagram image. |
 | [architecture-diagram.md](./architecture-diagram.md) | Mermaid source and Excalidraw box list. |
 | [message-schemas/](./message-schemas/) | JSON schemas (schedule command, ack, execution report, heartbeat) and [examples.md](./message-schemas/examples.md). |
